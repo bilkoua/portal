@@ -14,8 +14,11 @@ type Changed struct {
 
 // OnSignalSettingChanged listens for the SettingChanged signal.
 // This signal is emitted when a setting changes.
+//
+// This function blocks for the lifetime of the subscription; the subscription
+// is released only when the process exits.
 func OnSignalSettingChanged(callback func(changed Changed)) error {
-	signal, err := apis.ListenOnSignal(interfaceName, "SettingChanged")
+	signal, _, err := apis.ListenOnSignal(interfaceName, "SettingChanged")
 	if err != nil {
 		return err
 	}
